@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Result:Identifiable {
+    let id = UUID()
+    let question: Question
+    let isTrue: Bool
+}

@@ -18,7 +18,8 @@ struct QuestionView: View {
     @Binding var showingQuiz: Bool
     
     @State var shuffledAnswers: [String] = []
-        
+    
+
     func buttonBackgroundColor(for answer: String) -> Color {
         if !isAnswerTapped && timeRemaining > 0 {
             return Color.orange
@@ -100,6 +101,11 @@ struct QuestionView: View {
                             selectedAnswer = answer
                             isAnswerTapped = true
                             resetTimer()
+                            if selectedAnswer == quizModel.questions[quizModel.currentQuestionIndex].correct_answer {
+                                quizModel.resultKeeper.append(Result(question: quizModel.questions[quizModel.currentQuestionIndex], isTrue: true))
+                            } else {
+                                quizModel.resultKeeper.append(Result(question: quizModel.questions[quizModel.currentQuestionIndex], isTrue: false))
+                            }
                         }, label: {
                             Text(answer)
                                 .padding()
@@ -120,6 +126,7 @@ struct QuestionView: View {
                     Button(action: {
                         if isAnswerTapped {
                             if quizModel.currentQuestionIndex < (quizModel.questions.count - 1) {
+                                print("\(quizModel.currentQuestionIndex)")
                                 quizModel.checkAnswer(selectedAnswer)
                                 resetTimer()
                                 timeRemaining = 20

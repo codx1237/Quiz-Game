@@ -16,7 +16,8 @@ class QuizModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var quizCompleted = false
-    
+    @Published var resultKeeper: [Result] = []
+
     let categories: [Category] = [
         Category(id: 9, name: "General Knowledge"),
         Category(id: 10, name: "Entertainment: Books"),
@@ -82,7 +83,6 @@ class QuizModel: ObservableObject {
         if answer == questions[currentQuestionIndex].correct_answer {
             score += 1
         }
-        
         if currentQuestionIndex < questions.count - 1 {
             currentQuestionIndex += 1
         } else {

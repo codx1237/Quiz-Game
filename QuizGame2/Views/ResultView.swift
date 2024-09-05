@@ -12,10 +12,19 @@ struct ResultView: View {
     @ObservedObject var quizModel: QuizModel
     @Binding var showingQuiz: Bool
     
-    
+    let columns = [GridItem(.adaptive(minimum: 80, maximum: 80))]
+
+    func questionRecBackground(result: Result) -> Color {
+        if result.isTrue {
+            return Color.green
+        } else {
+            return Color.red
+        }
+    }
+
     var body: some View {
-        VStack{
-            
+        VStack(alignment: .leading){
+
             RoundedRectangle(cornerSize: CGSize(width: 20, height: 20), style: .continuous)
                 .fill(Color.orange.opacity(0.5))
                 .frame(maxWidth: .infinity,maxHeight: 60)
@@ -27,7 +36,6 @@ struct ResultView: View {
                 }
             
             Button(action: {
-              //  quizModel.resetQuiz()
                 showingQuiz = false
             }, label: {
                 Text("Reset the game")
@@ -40,8 +48,36 @@ struct ResultView: View {
                     .cornerRadius(12)
             })
             
-            
+            Text("Questions")
+                .font(.title2)
+                .bold()
+                .padding()
+
+            LazyVGrid(columns: columns, content: {
+                ForEach(0 ..< quizModel.resultKeeper.count) { item in
+                    RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                        .fill(questionRecBackground(result: quizModel.resultKeeper[item]))
+                        .frame(width: 50,height: 50)
+                        .overlay {
+                            Text("\(item + 1)")
+                                .foregroundStyle(Color.white)
+                                .bold()
+                        }
+                }
+            })
+
+
+
         }.padding()
+
+        
+
+
+
+
+
+
+
     }
 }
 
